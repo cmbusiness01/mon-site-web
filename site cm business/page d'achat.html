@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achat de Cryptomonnaies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: darkblue;
+            color: white;
+            padding: 1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5em 1em;
+        }
+        .navbar a:hover {
+            background-color: white;
+            color: darkblue;
+        }
+        .container {
+            padding: 2em;
+        }
+        .form-group {
+            margin-bottom: 1em;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.5em;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            padding: 0.5em 1em;
+            background-color: darkblue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: white;
+            color: darkblue;
+        }
+        .result {
+            margin-top: 1em;
+            padding: 1em;
+            background-color: #dcdcdc;
+            border-radius: 4px;
+        }
+        .address {
+            margin-top: 1em;
+            padding: 1em;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+        }
+        .address label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+        .address input {
+            width: 100%;
+            padding: 0.5em;
+            box-sizing: border-box;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+    <script>
+        function calculatePrice() {
+            var amountUSD = document.getElementById('amountUSD').value;
+            var rate = 3400; // 1 USD = 3400 FC
+            var amountFC = amountUSD * rate;
+            document.getElementById('result').innerText = 'Montant en FC : ' + amountFC.toFixed(2) + ' FC';
+        }
+
+        function copyToClipboard(id) {
+            var copyText = document.getElementById(id);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand("copy");
+            alert("Numéro copié : " + copyText.value);
+        }
+
+        function updatePaymentNumber() {
+            var paymentMethod = document.getElementById('paymentMethod').value;
+            var paymentNumber = '';
+            switch (paymentMethod) {
+                case 'mpesa':
+                    paymentNumber = '+243828259895';
+                    break;
+                case 'orange':
+                    paymentNumber = '+243898858135';
+                    break;
+                case 'airtel':
+                    paymentNumber = '+243971815110';
+                    break;
+            }
+            document.getElementById('paymentNumber').value = paymentNumber;
+        }
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="index.html">CM BUSINESS</a>
+        </div>
+        <div class="nav-links">
+            <a href="signup.html">S'inscrire</a>
+            <a href="login.html">Se connecter</a>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Achat de Cryptomonnaies</h1>
+        <form>
+            <div class="form-group">
+                <label for="crypto">Choisissez une cryptomonnaie :</label>
+                <select id="crypto">
+                    <option value="USDT">Tether USDT</option>
+                    <option value="BNB">BNB</option>
+                    <option value="BTC">BTC</option>
+                    <option value="SOL">SOLANA</option>
+                    <option value="DOGE">DOGECOIN</option>
+                    <option value="SHIB">SHIBA INU</option>
+                    <option value="TRX">TRON TRX</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="amountUSD">Montant en USD :</label>
+                <input type="number" id="amountUSD" placeholder="Entrez le montant en USD" oninput="calculatePrice()">
+            </div>
+            <div class="form-group">
+                <label for="paymentMethod">Choisissez un Moyen de paiement :</label>
+                <select id="paymentMethod" onchange="updatePaymentNumber()">
+                    <option value="mpesa">M-pesa</option>
+                    <option value="orange">Orange Money</option>
+                    <option value="airtel">Airtel Money</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="paymentNumber">Numéro de paiement :</label>
+                <input type="text" id="paymentNumber" readonly>
+                <button type="button" onclick="copyToClipboard('paymentNumber')">Copier</button>
+            </div>
+            <div class="form-group">
+                <label for="hashID">Trans ID :</label>
+                <input type="text" id="hashID" placeholder="Entrez la Trans ID ici"required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Acheter</button>
+            </div>
+        </form>
+        <div id="result" class="result">
+            Montant en FC : 0 FC
+        </div>
+    </div>
+</body>
+</html>

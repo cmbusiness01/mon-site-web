@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cm business</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(112, 230, 200);
+            color: darkblue;
+        }
+        header {
+            background-color: darkblue;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 2rem;
+        }
+        .form-container {
+            background-color: #f2f2f2;
+            padding: 2rem;
+            border-radius: 5px;
+            width: 300px;
+            margin: 2rem auto;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="password"],
+        .form-container input[type="email"] {
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-container input[type="submit"] {
+            background-color: darkblue;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container input[type="submit"]:hover {
+            background-color: #333;
+        }
+        .etf-section, .market-section {
+            background-color: #e6e6e6;
+            padding: 2rem;
+            border-radius: 5px;
+            margin-top: 2rem;
+        }
+        .market-section canvas {
+            width: 100%;
+            max-width: 600px;
+        }
+        .price-list {
+            list-style: none;
+            padding: 0;
+        }
+        .price-list li {
+            padding: 0.5rem 0;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .logo { 
+            margin-right: 20px;
+        }
+        .logo img {
+            height: 100px;
+            width: auto;
+        }
+        .main-title {
+            text-align: center;
+            margin-top: 0;
+        }
+        @media only screen and (max-width: 768px
+        ) {}
+         .body {
+            font-size: 14px;
+        }  
+         @media only screen and (max-width: 768px
+        ) {}
+         .main-title {
+            text-align: flex;
+         }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<header>
+    <div class="header">
+    <div class="logo">
+        <img src="logo.png" alt="">
+    </div>
+    <center><h2 class="maim-title">Bienvenue sur notre plateforme de Cryptomonnaie</h2></center>
+</div>
+    <nav>
+        <a href="#home">Accueil</a>
+        <a href="page d'achat.html">ACHAT</a>
+        <a href="page de vente.html">VENTE</a>
+        <a href="https://wa.me/+243971815110">Contactez-nous</a>
+    </nav>
+</header>
+<div id="home" class="container">
+    <h2>Accueil</h2>
+    <p>Bienvenue sur notre plateforme de vente et d'achat de cryptomonnaie. Commencez dès aujourd'hui à échanger en toute sécurité et facilement.</p>
+
+    <div class="etf-section">
+        <h3>Qu'est-ce que une  Cryptomonnaie ?</h3>
+        <p>Une cryptomonnaie est une forme de monnaie numérique ou virtuelle qui utilise la cryptographie pour sécuriser les transactions et contrôler la création de nouvelles unités. Contrairement aux monnaies traditionnelles émises par les gouvernements, les cryptomonnaies fonctionnent de manière décentralisée sur des technologies de type blockchain.
+        </p>
+    </div>
+
+    <div class="market-section">
+        <h3>Graphique du Marché</h3>
+        <canvas id="marketChart"></canvas>
+    </div>
+
+    <div class="market-section">
+        <h3>Prix des Cryptomonnaies</h3>
+        <ul class="price-list" id="priceList"></ul>
+    </div>
+<script>
+    // Fonction pour récupérer les prix des cryptomonnaies depuis l'API CoinGecko
+    async function fetchCryptoPrices() {
+        const response = await fetch('https://api.coingecko.com/api/v3/coins/markets', {
+            qs: { vs_currency: 'usd' }
+        });
+        const data = await response.json();
+        return data;
+    }
+
+    // Fonction pour afficher les prix des cryptomonnaies
+    async function displayCryptoPrices() {
+        const prices = await fetchCryptoPrices();
+        const priceList = document.getElementById('priceList');
+        prices.forEach(price => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${price.name}: $${price.current_price}`;
+            priceList.appendChild(listItem);
+        });
+    }
+
+    // Fonction pour afficher le graphique du marché
+    async function displayMarketChart() {
+        const prices = await fetchCryptoPrices();
+        const ctx = document.getElementById('marketChart').getContext('2d');
+        const labels = prices.map(price => price.name);
+        const data = prices.map(price => price.current_price);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Prix des Cryptomonnaies',
+                    data: data,
+                    borderColor: 'darkblue',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { display: true },
+                    y: { display: true }
+                }
+            }
+        });
+    }
+
+    // Appel des fonctions pour afficher les prix et le graphique
+    displayCryptoPrices();
+    displayMarketChart();
+</script>
+
+</body>
+</html>
